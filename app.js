@@ -4,6 +4,8 @@
     const mongoose = require('mongoose');
     const bodyParser = require('body-parser');
     const methodOverride = require('method-override');
+    const flash = require('connect-flash');
+    const session = require('express-session');
 
 //Create Express server
     const app = express();
@@ -12,9 +14,9 @@
     mongoose.connect('mongodb://localhost/vidjot-dev', {
         useNewUrlParser: true
     }).then(() => {
-        console.log('Mongodb connected...')
+        console.log('Mongodb connected...');
     }).catch(() => {
-        console.log('Can\'t connect to database...')
+        console.log('Can\'t connect to database...');
     })
 
 //Load Idea Model
@@ -22,16 +24,35 @@
     const Idea = mongoose.model('ideas');
 
 //Middleware config:
+   
     //-Handlebars
         app.engine('handlebars',exphbs({defaultLayout: 'main'}));
         app.set('view engine', 'handlebars');
 
     //-Body-parser
-        app.use(bodyParser.urlencoded({ extended: true }))
-        app.use(bodyParser.json({ type: 'application/json' }))
+        app.use(bodyParser.urlencoded({ extended: true }));
+        app.use(bodyParser.json({ type: 'application/json' }));
 
     //-Method-override
-        app.use(methodOverride('_method'))
+        app.use(methodOverride('_method'));
+
+    //-Espress-session
+        app.use(session({
+            secret: 'secret',
+            resave: true,
+            saveUninitialized: true,
+        }));
+
+    //-Node Flash
+        app.use(flash());
+    
+    //-Global middleware variables
+        app.use((req,res,next) => {
+            res.locals.success_msg = req.flash('success_msg');
+            res.locals.error_msg = req.flash('error_msg');
+            res.locals.error = req.flash('error');
+            next();
+        })
 
 //Index route
     app.get('/', (req,res) => {
@@ -100,6 +121,7 @@
             new Idea(newUser)
                 .save()
                 .then(() => {
+                    req.flash('success_msg', 'Idea was added');
                     res.redirect('/ideas')
                 })
         }
@@ -116,15 +138,17 @@
             //Save 
             idea.save()
                 .then(() => {
+                    req.flash('success_msg', 'Idea was updated');
                     res.redirect('/ideas')
             });
         })
     })
 
-//Process Edit form
+//Process Delete form
     app.delete('/ideas/:id', (req, res) => {
         Idea.findByIdAndDelete(req.params.id)
             .then(() => {
+                req.flash('success_msg', 'Idea was removed');
                 res.redirect('/ideas')
             })
     })
