@@ -1,4 +1,4 @@
-//NodeJS modules
+//NodeJS third-party modules
     const express = require('express');
     const mongoose = require('mongoose');
     const router = express.Router();
@@ -62,7 +62,7 @@
                 .save()
                 .then(() => {
                     req.flash('success_msg', 'Idea was added');
-                    res.redirect('./')
+                    res.redirect('./');
                 })
         }
     });
@@ -79,7 +79,7 @@
             idea.save()
                 .then(() => {
                     req.flash('success_msg', 'Idea was updated');
-                    res.redirect('./')
+                    res.redirect('./');
             });
         })
     });
@@ -89,7 +89,7 @@
         Idea.findByIdAndDelete(req.params.id)
             .then(() => {
                 req.flash('success_msg', 'Idea was removed');
-                res.redirect('./')
+                res.redirect('./');
             })
     });
 

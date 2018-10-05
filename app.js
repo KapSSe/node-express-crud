@@ -1,4 +1,8 @@
-//NodeJS modules
+
+//NodeJS core modules
+    const path = require('path');
+
+//NodeJS third-party modules
     const express = require('express');
     const exphbs = require('express-handlebars');
     const mongoose = require('mongoose');
@@ -24,7 +28,10 @@
     })
 
 //Middleware config:
-   
+
+    //-Static folder
+        app.use(express.static(path.join(__dirname, 'public')));
+
     //-Handlebars
         app.engine('handlebars',exphbs({defaultLayout: 'main'}));
         app.set('view engine', 'handlebars');

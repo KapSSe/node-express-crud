@@ -3,14 +3,18 @@
     const Schema = mongoose.Schema;
 
 //Create schema
-    const IdeaSchema = new Schema({
-        title:{
+    const UserSchema = new Schema({
+        name:{
             type: String,
             required: true
         },
-        details: {
+        email: {
             type: String,
             required:  true
+        },
+        password: {
+            type: String,
+            required: true
         },
         date: {
             type: Date,
@@ -19,4 +23,4 @@
     });
 
 //Create model
-    mongoose.model('ideas',IdeaSchema)
+    mongoose.model('users',UserSchema)
