@@ -2,10 +2,10 @@
     const express = require('express');
     const mongoose = require('mongoose');
     const router = express.Router();
+    const {IdeaSchema} = require('../models/Idea');
 
 //Load Idea Model
-    require('../models/Idea');
-    const Idea = mongoose.model('ideas');
+    const Idea = mongoose.model('ideas', IdeaSchema);
 
 //Idea index route
     router.get('/', (req,res) => {

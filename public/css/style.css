@@ -2,6 +2,7 @@ body{
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
     text-rendering: optimizeLegibility;
+    font-weight: 300;
 }
 
 .navbar{
@@ -15,3 +16,12 @@ body{
     height: auto;
     margin: 0px auto;
 }
+
+.form-control, .card, .btn {
+    border-radius: 0;
+}
+
+.card h3{
+    font-weight: 300;
+}
+

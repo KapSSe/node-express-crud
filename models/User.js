@@ -1,6 +1,5 @@
 //NodeJS third-party modules
-    const mongoose = require('mongoose');
-    const Schema = mongoose.Schema;
+const {Schema} = require('mongoose');
 
 //Create schema
     const UserSchema = new Schema({
@@ -22,5 +21,8 @@
         }
     });
 
-//Create model
-    mongoose.model('users',UserSchema)
+//Module exports    
+    module.exports = {
+        UserSchema
+    };
+

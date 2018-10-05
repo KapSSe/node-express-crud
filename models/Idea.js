@@ -1,6 +1,5 @@
 //NodeJS third-party modules
-    const mongoose = require('mongoose');
-    const Schema = mongoose.Schema;
+    const {Schema} = require('mongoose');
 
 //Create schema
     const IdeaSchema = new Schema({
@@ -18,5 +17,8 @@
         }
     });
 
-//Create model
-    mongoose.model('ideas',IdeaSchema)
+//Module exports    
+    module.exports = {
+        IdeaSchema
+    };    
+// model = mongoose.model('ideas', IdeaSchema) 

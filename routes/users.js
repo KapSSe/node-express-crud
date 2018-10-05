@@ -2,11 +2,12 @@
     const express = require('express');
     const mongoose = require('mongoose');
     const bcrypt = require('bcryptjs');
+    const passport = require('passport');
     const router = express.Router();
+    const {UserSchema} = require('../models/User');
 
-//Load User Model
-    require('../models/User');
-    const User = mongoose.model('users');
+//Assign a model
+    const User = mongoose.model('users',UserSchema);
 
 //User Login Route
     router.get('/login', (req, res) => {
@@ -18,10 +19,18 @@
         res.render('users/register')
     });
 
+//Login Form Post
+    router.post('/login', (req, res, next) => {
+        passport.authenticate('local', {
+            successRedirect:'/ideas',
+            failureRedirect:'/users/login',
+            failureFlash: true,
+        })(req,res,next);
+    })
+
 //Register Form Post
     router.post('/register', (req, res) => {
         const errors = [];
-
         if (req.body.password != req.body.password2) {
             errors.push({
                 text: 'Passwords do not match'
@@ -63,7 +72,7 @@
                                 if (err) throw err;
                                 newUser.password = hash;
                                 newUser.save().then((newUser) => {
-                                    req.flash('success_msg', 'You have been registerd successfuly');
+                                    req.flash('success_msg', 'You have been registered');
                                     res.redirect('/users/login')
                                 }).catch((err) => {
                                     console.log(err);
